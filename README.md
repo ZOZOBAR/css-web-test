@@ -1,8 +1,8 @@
-BUCSSA Website Test
+# BUCSSA Website Test
 
 BUCSSA 网站前端开发与测试项目
 
-项目概述（Overview）
+## 项目概述（Overview）
 
 BUCSSA Website Test 是一个用于 BUCSSA 网站的独立前端开发与测试仓库。
 
@@ -16,7 +16,7 @@ BUCSSA Website Test 是一个用于 BUCSSA 网站的独立前端开发与测试�
 
 注意： 本项目为独立开发与测试环境，并非 BUCSSA 官方正式网站，不会直接影响正式网站的运行。
 
-当前功能（Current Features）
+## 当前功能（Current Features）
 
 * Hero Section： 首页主视觉区域
 * Responsive Navigation： 响应式导航栏
@@ -26,7 +26,7 @@ BUCSSA Website Test 是一个用于 BUCSSA 网站的独立前端开发与测试�
 * Global Footer： 全局页脚及社交媒体图标
 * Glass-style UI： 半透明玻璃质感交互控件
 
-技术栈（Tech Stack）
+## 技术栈（Tech Stack）
 
 本项目使用原生前端技术开发：
 
@@ -36,8 +36,9 @@ BUCSSA Website Test 是一个用于 BUCSSA 网站的独立前端开发与测试�
 
 目前未使用 React、Vue 等前端框架，也不依赖额外的构建工具。
 
-项目结构（Project Structure）
+## 项目结构（Project Structure）
 
+```text
 .
 ├── assets/          # 图片、Logo 及社交媒体 SVG 图标
 ├── index.html       # 页面 HTML 结构
@@ -45,8 +46,9 @@ BUCSSA Website Test 是一个用于 BUCSSA 网站的独立前端开发与测试�
 ├── script.js        # 导航栏及基础交互逻辑
 ├── README.md        # 项目说明文档
 └── CHANGELOG.md     # 开发更新日志
+```
 
-本地开发（Local Development）
+## 本地开发（Local Development）
 
 本项目无需安装额外依赖，也不需要执行构建操作。
 
@@ -61,7 +63,9 @@ BUCSSA Website Test 是一个用于 BUCSSA 网站的独立前端开发与测试�
 
 在项目根目录打开 Terminal，执行：
 
+```bash
 python3 -m http.server 5500
+```
 
 随后在浏览器访问：
 
@@ -69,7 +73,7 @@ http://localhost:5500
 
 即可通过本地服务器预览项目。
 
-网站部署（Deployment）
+## 网站部署（Deployment）
 
 本项目为静态网站，可以使用 GitHub Pages 进行部署。
 
@@ -84,7 +88,7 @@ http://localhost:5500
 
 注意： 本文档不代表 GitHub Pages 已经成功部署，实际部署状态需要在仓库中确认。
 
-开发状态（Development Status）
+## 开发状态（Development Status）
 
 当前版本：v0.1.0
 
@@ -94,10 +98,10 @@ http://localhost:5500
 
 后续将逐步完善其他页面、语言切换功能及交互体验。
 
-更新日志（Changelog）
+## 更新日志（Changelog）
 
 项目开发过程中的功能新增、视觉优化、问题修复及后续计划统一记录在：
 
-CHANGELOG.md
+[CHANGELOG.md](CHANGELOG.md)
 
 建议每完成一个明确的开发阶段后更新日志，以便追踪项目进展和版本变化。
