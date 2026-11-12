@@ -1,0 +1,1040 @@
+/* ========================================
+   1. Global Styles
+======================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: #e8e4df;
+  color: #1a1a1a;
+  font-family:
+    "PingFang HK",
+    "PingFang SC",
+    "Noto Sans CJK SC",
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+}
+
+/* Accessibility: Skip to main content */
+
+.skip {
+  position: fixed;
+  top: -60px;
+  left: 10px;
+  background: #fff;
+  padding: 10px;
+  z-index: 100;
+}
+
+.skip:focus {
+  top: 10px;
+}
+
+
+/* ========================================
+   2. Navigation
+======================================== */
+
+/* Header: Fixed positioning */
+
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 50;
+  padding: 26px clamp(24px, 5.5vw, 90px);
+  pointer-events: none;
+
+  transition:
+    padding 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Default Navigation */
+
+.navigation {
+  pointer-events: auto;
+
+  display: flex;
+  align-items: center;
+  gap: clamp(18px, 2vw, 36px);
+
+  width: 100%;
+  max-width: 1600px;
+  margin: auto;
+  padding: 10px 0;
+
+  color: #fff;
+
+  /* nav bar animation transition  */
+  transition:
+    width 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+    max-width 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+    padding 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.55s,
+    box-shadow 0.55s,
+    border-radius 0.55s,
+    backdrop-filter 0.55s;
+}
+
+/* Brand */
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+
+  white-space: nowrap;
+  flex-shrink: 0;
+
+  font-size: clamp(14px, 1.35vw, 21px);
+  font-weight: 600;
+  letter-spacing: 0.19em;
+}
+
+.brand img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+}
+
+/* Navigation Links */
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(15px, 2.1vw, 38px);
+
+  flex: 1;
+  white-space: nowrap;
+}
+
+.nav-links a {
+  font-size: clamp(12px, 1vw, 15px);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+
+  opacity: 0.94;
+
+  transition: opacity 0.2s;
+}
+
+.nav-links a:hover {
+  opacity: 0.6;
+}
+
+/* Navigation Actions */
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Language Switch */
+
+.language-switch {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 40px;
+
+  background: rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(12px);
+
+  color: #fff;
+
+  padding: 9px 13px;
+
+  white-space: nowrap;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.language-switch span:not(.active) {
+  opacity: 0.65;
+}
+
+/* Mobile Menu Button */
+
+.menu-toggle {
+  display: none;
+  background: transparent;
+  border: 0;
+  padding: 8px;
+}
+
+.menu-toggle span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: #fff;
+  margin: 5px;
+}
+
+
+/* ========================================
+   2.1 Navigation: Scrolled State
+======================================== */
+
+/*
+  The "is-scrolled" class is added by JavaScript.
+
+  Default:
+  Transparent navigation over the Hero.
+
+  Scrolled:
+  Deep-red floating pill navigation.
+*/
+
+.site-header.is-scrolled {
+  padding: 18px 20px;
+}
+
+.site-header.is-scrolled .navigation {
+  width: min(100%, 860px);
+  max-width: 860px;
+
+  background: #B24D4D;
+
+  padding: 10px 22px;
+  border-radius: 100px;
+
+  box-shadow: 0 15px 40px rgba(36, 13, 13, 0.22);
+  backdrop-filter: blur(18px);
+
+
+  gap: 18px;
+}
+
+/* Scrolled Brand */
+
+.site-header.is-scrolled .brand img {
+  width: 32px;
+  height: 32px;
+}
+
+.site-header.is-scrolled .brand {
+  font-size: 14px;
+}
+
+/* Scrolled Navigation Links */
+
+.site-header.is-scrolled .nav-links {
+  gap: clamp(10px, 1.3vw, 20px);
+}
+
+.site-header.is-scrolled .nav-links a {
+  font-size: 12px;
+}
+
+/* Scrolled Language Switch */
+
+.site-header.is-scrolled .language-switch {
+  padding: 6px 10px;
+  font-size: 11px;
+}
+
+
+/* ========================================
+   3. Hero Section
+======================================== */
+
+/* Hero Background */
+
+.hero {
+  height: 100svh;
+  min-height: 650px;
+
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+  background:
+    url("assets/hero.png") center center / cover no-repeat;
+
+  color: #fff;
+
+  isolation: isolate;
+}
+
+/* Hero Overlay */
+
+.hero-shade {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+
+  background: linear-gradient(180deg,
+      rgba(16, 14, 20, 0.44) 0%,
+      rgba(16, 14, 20, 0.06) 35%,
+      rgba(0, 0, 0, 0.20) 65%,
+      rgba(0, 0, 0, 0.32) 100%);
+}
+
+/* Hero Content Container */
+
+.hero-content {
+  width: min(100% - 11vw, 1500px);
+  margin: 6vh auto 0;
+}
+
+/* Hero Title */
+
+.hero h1 {
+  font-size: clamp(80px, 10.2vw, 190px);
+  font-weight: 600;
+  letter-spacing: 0.19em;
+  line-height: 1.05;
+
+  margin: 0 0 12px;
+
+  white-space: nowrap;
+}
+
+/* Hero Chinese Subtitle */
+
+.hero-content p {
+  font-size: clamp(19px, 3.4vw, 55px);
+  font-weight: 600;
+  letter-spacing: 0.19em;
+
+  margin: 0 0 44px;
+}
+
+/* Portal Button */
+
+.portal {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+
+  padding: 17px 37px;
+
+  background: rgba(232, 228, 223, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+
+  backdrop-filter: blur(14px);
+
+  border-radius: 60px;
+
+  color: #fff;
+
+  font-size: clamp(17px, 2.3vw, 30px);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+
+  box-shadow: 0 9px 24px rgba(0, 0, 0, 0.14);
+
+  transition:
+    transform 0.25s,
+    background 0.25s;
+}
+
+/* Portal Hover Animation */
+
+.portal:hover {
+  transform: translateY(-3px);
+  background: rgba(232, 228, 223, 0.68);
+}
+
+/* Scroll Indicator */
+
+.scroll-cue {
+  position: absolute;
+  bottom: 34px;
+  right: 5.5vw;
+
+  font-size: 11px;
+  letter-spacing: 0.18em;
+}
+
+
+/* ========================================
+   4. Placeholder Section
+   Temporary Scroll Testing Area
+======================================== */
+
+.placeholder {
+  min-height: 105vh;
+
+  display: grid;
+  place-items: center;
+
+  padding: 140px 30px;
+
+  background: #e8e4df;
+}
+
+.placeholder-inner {
+  max-width: 900px;
+  width: 100%;
+  text-align: center;
+}
+
+.eyebrow {
+  font-size: 12px;
+  letter-spacing: 0.25em;
+  color: #9d5555;
+}
+
+.placeholder h2 {
+  font-size: clamp(55px, 8vw, 110px);
+  font-weight: 500;
+  letter-spacing: -0.06em;
+
+  margin: 30px 0;
+}
+
+.placeholder p {
+  font-size: 17px;
+  line-height: 1.9;
+  color: #6b6b6b;
+}
+
+.placeholder-line {
+  height: 1px;
+  background: #c7c0ba;
+
+  margin: 90px 0 35px;
+}
+
+
+/* ========================================
+   5. Footer
+======================================== */
+
+/* Footer Container */
+
+.footer {
+  background: #772525;
+  color: #fff;
+
+  padding:
+    74px clamp(24px, 5.6vw, 80px) 36px;
+}
+
+.footer-inner {
+  max-width: 1280px;
+  margin: auto;
+}
+
+/* Footer Main Layout */
+
+.footer-main {
+  display: flex;
+  justify-content: space-between;
+  gap: 60px;
+  align-items: flex-start;
+
+  min-height: 190px;
+}
+
+/* Organization Identity */
+
+.footer-identity {
+  display: flex;
+  gap: 25px;
+  align-items: center;
+}
+
+.footer-identity img {
+  width: 94px;
+  height: 94px;
+  object-fit: contain;
+}
+
+.footer-identity strong {
+  display: block;
+
+  font-size: 20px;
+  letter-spacing: 0.035em;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.footer-identity p {
+  font-size: 13px;
+  line-height: 1.6;
+
+  opacity: 0.85;
+
+  margin: 8px 0 0;
+}
+
+/* Contact Information */
+
+.footer-contact {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+
+  min-width: 210px;
+
+  font-size: 14px;
+}
+
+.footer-label {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+.footer-contact a {
+  opacity: 0.86;
+}
+
+.footer-contact a:hover,
+.back-to-top:hover {
+  opacity: 0.6;
+}
+
+/* Footer Bottom */
+
+.footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  padding-top: 27px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+/* Social Media */
+
+.social {
+  display: flex;
+  align-items: center;
+  gap: 35px;
+}
+
+.social-icons {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.social-icons a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 30px;
+  height: 30px;
+
+  transition: transform 0.2s;
+}
+
+.social-icons a:hover {
+  transform: translateY(-3px);
+}
+
+.social-icons img {
+  display: block;
+
+  max-width: 25px;
+  max-height: 25px;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+}
+
+/* Back to Top */
+
+.back-to-top {
+  font-size: 13px;
+  white-space: nowrap;
+
+  transition: opacity 0.2s;
+}
+
+
+/* ========================================
+   6. Responsive Design
+======================================== */
+
+/* Tablet */
+
+@media (max-width: 1050px) {
+
+  .brand span {
+    display: none;
+  }
+
+  .nav-links {
+    gap: 14px;
+  }
+
+  .site-header.is-scrolled .navigation {
+    width: min(100%, 750px);
+  }
+
+}
+
+
+/* ========================================
+   6.1 Mobile Layout
+======================================== */
+
+@media (max-width: 740px) {
+
+  /* Mobile Header */
+
+  .site-header {
+    padding: 16px 20px;
+  }
+
+  .site-header.is-scrolled {
+    padding: 12px 15px;
+  }
+
+  .navigation {
+    gap: 10px;
+  }
+
+  .brand img {
+    width: 42px;
+    height: 42px;
+  }
+
+  /* Mobile Navigation Menu */
+
+  .nav-links {
+    display: none;
+
+    position: absolute;
+    top: 76px;
+    left: 20px;
+    right: 20px;
+
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+
+    background: #772525;
+
+    border-radius: 20px;
+    padding: 15px 22px;
+
+    box-shadow: 0 18px 30px rgba(0, 0, 0, 0.25);
+  }
+
+  .nav-links.open {
+    display: flex;
+  }
+
+  .nav-links a {
+    padding: 12px;
+    font-size: 15px !important;
+  }
+
+  .nav-actions {
+    margin-left: auto;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  /* Mobile Scrolled Navigation */
+
+  .site-header.is-scrolled .navigation {
+    width: 100%;
+    padding: 8px 15px;
+  }
+
+  .site-header.is-scrolled .nav-links {
+    top: 67px;
+    left: 15px;
+    right: 15px;
+  }
+
+  /* Mobile Hero */
+
+  .hero {
+    min-height: 620px;
+    background-position: 52% center;
+  }
+
+  .hero-content {
+    width: calc(100% - 48px);
+    margin-top: 9vh;
+  }
+
+  .hero h1 {
+    font-size: clamp(55px, 13vw, 96px);
+    letter-spacing: 0.07em;
+  }
+
+  .hero-content p {
+    font-size: clamp(16px, 4.1vw, 26px);
+    letter-spacing: 0.055em;
+    line-height: 1.5;
+
+    margin-bottom: 28px;
+  }
+
+  .portal {
+    font-size: 17px;
+    padding: 14px 25px;
+  }
+
+  /* Mobile Footer */
+
+  .footer {
+    padding: 52px 24px 32px;
+  }
+
+  .footer-main {
+    flex-direction: column;
+    gap: 38px;
+    padding-bottom: 45px;
+  }
+
+  .footer-identity {
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .footer-identity img {
+    width: 64px;
+    height: 64px;
+  }
+
+  .footer-identity strong {
+    font-size: 15px;
+  }
+
+  .footer-identity p {
+    font-size: 12px;
+  }
+
+  .footer-bottom {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .social {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 17px;
+  }
+
+  .social-icons {
+    gap: 16px;
+  }
+
+}
+
+
+/* ========================================
+   7. Accessibility
+   Reduced Motion Preference
+======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+
+}
+
+
+/* ========================================
+   8. Button Visual Refinement
+   Figma Handoff / Button Components
+======================================== */
+
+/* ----------------------------------------
+   8.1 Hero - Portal Button
+---------------------------------------- */
+
+.portal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+
+  padding: 16px 34px;
+
+  /* Liquid Glass Material */
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  border-radius: 999px;
+
+  backdrop-filter: blur(18px) saturate(135%);
+  -webkit-backdrop-filter: blur(18px) saturate(135%);
+
+  color: #fff;
+
+  font-size: clamp(17px, 2.3vw, 25px);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    0 5px 16px rgba(0, 0, 0, 0.12);
+
+  transition:
+    transform 0.25s ease,
+    background-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+/* Portal Hover */
+
+.portal:hover {
+  transform: translateY(-2px);
+
+  background: rgba(255, 255, 255, 0.2);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.36),
+    0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+
+/* ----------------------------------------
+   8.2 Language Switch - Hero State
+---------------------------------------- */
+
+.language-switch {
+  position: relative;
+  isolation: isolate;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+
+  min-width: 92px;
+  min-height: 38px;
+
+  padding: 4px;
+
+
+  /* Liquid Glass Material */
+
+  background: rgba(255, 255, 255, 0.14);
+
+  border: 1px solid rgba(255, 255, 255, 0.32);
+
+  border-radius: 999px;
+
+  backdrop-filter: blur(18px) saturate(135%);
+  -webkit-backdrop-filter: blur(18px) saturate(135%);
+
+  color: #fff;
+
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.14);
+
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.language-switch span {
+  display: grid;
+  place-items: center;
+
+  min-width: 40px;
+  min-height: 28px;
+
+  padding: 0 6px;
+
+  border-radius: 999px;
+
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease,
+    opacity 0.25s ease;
+}
+
+.language-switch span.active {
+  background: rgba(255, 255, 255, 0.23);
+  opacity: 1;
+}
+
+.language-switch span:not(.active) {
+  opacity: 0.8;
+}
+
+
+
+
+
+/* ----------------------------------------
+   8.3 Language Switch - Scrolled State
+---------------------------------------- */
+
+.site-header.is-scrolled .language-switch {
+  min-width: 92px;
+  min-height: 34px;
+
+  padding: 3px;
+
+  background: #e8e4df;
+
+  border-color: transparent;
+  border-radius: 999px;
+
+  color: #b24d4d;
+
+  font-size: 12px;
+
+  box-shadow:
+    0 3px 8px rgba(44, 20, 20, 0.22);
+}
+
+.site-header.is-scrolled .language-switch span {
+  min-height: 26px;
+}
+
+.site-header.is-scrolled .language-switch span.active {
+  background: rgba(178, 77, 77, 0.1);
+}
+
+
+/* ----------------------------------------
+   8.4 Hamburger - Default State
+---------------------------------------- */
+
+@media (max-width: 740px) {
+
+  .menu-toggle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    width: 38px;
+    height: 38px;
+
+    padding: 0;
+
+    background: #e8e4df;
+
+    border: none;
+    border-radius: 50%;
+
+    box-shadow:
+      0 3px 8px rgba(44, 20, 20, 0.22);
+
+    transition:
+      transform 0.25s ease,
+      background-color 0.25s ease;
+  }
+
+  .menu-toggle span {
+    display: block;
+
+    width: 17px;
+    height: 2px;
+
+    margin: 2px 0;
+
+    background: #b24d4d;
+    border-radius: 2px;
+
+    transition:
+      transform 0.25s ease,
+      opacity 0.25s ease;
+  }
+
+  /* Hide the third line to match Figma */
+
+  .menu-toggle span:nth-child(3) {
+    display: none;
+  }
+
+  /* Expanded state */
+
+  .menu-toggle[aria-expanded="true"] span:first-child {
+    transform: translateY(3px) rotate(45deg);
+  }
+
+  .menu-toggle[aria-expanded="true"] span:nth-child(2) {
+    transform: translateY(-3px) rotate(-45deg);
+  }
+
+  .menu-toggle:hover {
+    transform: scale(1.05);
+  }
+
+  /* Hero: Liquid Glass Hamburger */
+
+  .site-header:not(.is-scrolled) .menu-toggle {
+    background: rgba(255, 255, 255, 0.14);
+
+    border: 1px solid rgba(255, 255, 255, 0.32);
+
+    backdrop-filter: blur(18px) saturate(135%);
+    -webkit-backdrop-filter: blur(18px) saturate(135%);
+
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.3),
+      0 5px 16px rgba(0, 0, 0, 0.12);
+  }
+
+  /* Hero: White Hamburger Lines */
+
+  .site-header:not(.is-scrolled) .menu-toggle span {
+    background: #fff;
+  }
+
+}
+
+
+/* ----------------------------------------
+   8.5 Mobile Portal
+---------------------------------------- */
+
+@media (max-width: 740px) {
+
+  .portal {
+    padding: 14px 25px;
+    font-size: 17px;
+  }
+
+}

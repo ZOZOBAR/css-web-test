@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#772525">
+
+  <title>BUCSSA | Interactive Demo</title>
+
+  <!-- External CSS -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <!-- ========================================
+       Navigation Bar
+       Transparent on Hero / Floating on Scroll
+  ========================================= -->
+
+  <a class="skip" href="#main">
+    跳转到内容
+  </a>
+
+  <header class="site-header" id="site-header">
+
+    <nav class="navigation" aria-label="主导航">
+
+      <!-- Brand Logo -->
+      <a class="brand" href="#top" aria-label="BUCSSA 返回顶部">
+        <img src="assets/logo.png" alt="">
+        <span>BUCSSA</span>
+      </a>
+
+      <!-- Navigation Links -->
+      <div class="nav-links" id="nav-links">
+        <a href="#top">主页</a>
+        <a href="#main">活动</a>
+        <a href="#main">资源</a>
+        <a href="#footer">关于我们</a>
+        <a href="#footer">CSSA荣誉墙</a>
+        <a href="#footer">合作</a>
+      </div>
+
+      <!-- Navigation Actions -->
+      <div class="nav-actions">
+
+        <!-- Language Switch -->
+        <button class="language-switch" type="button" aria-label="语言切换（演示）">
+          <span class="active">中</span>
+          <span>EN</span>
+        </button>
+
+        <!-- Mobile Menu Button -->
+        <button class="menu-toggle" type="button" aria-label="打开导航菜单" aria-expanded="false" aria-controls="nav-links">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+      </div>
+
+    </nav>
+
+  </header>
+
+
+  <!-- ========================================
+       Main Content
+  ========================================= -->
+
+  <main>
+
+    <!-- ======================================
+         Section 01: Hero
+    ======================================= -->
+
+    <section class="hero" id="top" aria-labelledby="hero-title">
+
+      <!-- Background Overlay -->
+      <div class="hero-shade"></div>
+
+      <!-- Hero Content -->
+      <div class="hero-content">
+
+        <h1 id="hero-title">
+          BUCSSA
+        </h1>
+
+        <p>
+          波士顿大学中国学生学者联合会
+        </p>
+
+        <!-- Portal Button -->
+        <a class="portal" href="#main">
+          CSSA Portal
+          <!-- <span aria-hidden="true"></span> -->
+        </a>
+
+      </div>
+
+      <!-- Scroll Indicator -->
+      <span class="scroll-cue">
+        SCROLL TO EXPLORE
+        <span aria-hidden="true">↓</span>
+      </span>
+
+    </section>
+
+
+    <!-- ======================================
+         Section 02: Placeholder
+         Temporary Scroll Testing Area
+    ======================================= -->
+
+    <section class="placeholder" id="main" aria-label="演示滚动区域">
+
+      <div class="placeholder-inner">
+
+        <span class="eyebrow">
+          BUCSSA / INTERACTIVE PREVIEW
+        </span>
+
+        <h2>
+          Beyond the Hero.
+        </h2>
+
+        <p>
+          此区域仅用于测试导航从透明状态过渡到悬浮胶囊的效果。
+          正式首页内容尚未开发。
+        </p>
+
+        <div class="placeholder-line"></div>
+
+        <span class="eyebrow">
+          SCROLL DOWN TO THE FOOTER ↓
+        </span>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- ========================================
+       Footer
+  ========================================= -->
+
+  <footer class="footer" id="footer">
+
+    <div class="footer-inner">
+
+      <!-- Footer Main -->
+      <div class="footer-main">
+
+        <!-- Organization Identity -->
+        <div class="footer-identity">
+
+          <img src="assets/logo.png" alt="BUCSSA 标志">
+
+          <div>
+
+            <strong>
+              波士顿大学中国学生学者联合会
+            </strong>
+
+            <p>
+              Boston University Chinese Students
+              &amp; Scholars Association
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <!-- Contact Information -->
+        <div class="footer-contact">
+
+          <span class="footer-label">
+            联系我们
+          </span>
+
+          <a href="mailto:bucssatech@gmail.com">
+            bucssatech@gmail.com
+          </a>
+
+          <a href="#main">
+            关于网站 ↗
+          </a>
+
+        </div>
+
+      </div>
+
+
+      <!-- Footer Bottom -->
+      <div class="footer-bottom">
+
+        <!-- Social Media -->
+        <div class="social">
+
+          <span class="footer-label">
+            关注我们
+          </span>
+
+          <div class="social-icons">
+
+            <!-- WeChat -->
+            <a href="#footer" aria-label="微信（演示）">
+              <img src="assets/wechat.svg" alt="">
+            </a>
+
+            <!-- Xiaohongshu -->
+            <a href="#footer" aria-label="小红书（演示）">
+              <img src="assets/xiaohongshu.svg" alt="">
+            </a>
+
+            <!-- Weibo -->
+            <a href="#footer" aria-label="微博（演示）">
+              <img src="assets/weibo.svg" alt="">
+            </a>
+
+            <!-- Bilibili -->
+            <a href="#footer" aria-label="Bilibili（演示）">
+              <img src="assets/bilibili.svg" alt="">
+            </a>
+
+            <!-- Douyin -->
+            <a href="#footer" aria-label="抖音（演示）">
+              <img src="assets/douyin.svg" alt="">
+            </a>
+
+            <!-- Instagram -->
+            <a href="#footer" aria-label="Instagram（演示）">
+              <img src="assets/instagram.svg" alt="">
+            </a>
+
+          </div>
+
+        </div>
+
+
+        <!-- Back to Top -->
+        <a class="back-to-top" href="#top">
+          返回顶部 ↑
+        </a>
+
+      </div>
+
+    </div>
+
+  </footer>
+
+
+  <!-- ========================================
+       JavaScript
+       Navigation Scroll / Mobile Menu
+  ========================================= -->
+
+  <script src="script.js" defer></script>
+
+</body>
+
+</html>
