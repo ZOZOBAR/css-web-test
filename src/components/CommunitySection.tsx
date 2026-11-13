@@ -1,0 +1,4 @@
+import styled from "styled-components";
+const Section=styled.section`padding:92px clamp(24px,6vw,103px) 118px;background:#f5f2ed;color:#26292b;h2{margin:0 0 48px;font-size:clamp(32px,3.2vw,52px)}.gallery{display:grid;grid-template-columns:2.15fr 1fr 1fr;gap:32px}img{width:100%;height:480px;object-fit:cover;display:block;border-radius:12px}.gallery img:nth-child(2){object-position:61% center}@media(max-width:740px){padding:68px 24px;.gallery{grid-template-columns:1fr;gap:20px}img{height:260px}}`;
+const photos=[{src:"/assets/home/community-crowd.png",alt:"BUCSSA 社群活动合照"},{src:"/assets/home/community-campus.jpg",alt:"BUCSSA 校园活动"},{src:"/assets/home/community-piano.jpeg",alt:"BUCSSA 音乐活动"}];
+export default function CommunitySection(){return <Section aria-labelledby="community-title"><h2 id="community-title">一起留下，属于我们的精彩瞬间</h2><div className="gallery">{photos.map(photo=><img key={photo.src} src={photo.src} alt={photo.alt}/>)}</div></Section>}

@@ -1,75 +1,24 @@
-# BUCSSA Website Test — 更新日志
+# Changelog
 
-本文件用于记录 BUCSSA 网站独立测试项目的功能开发、
-视觉优化、交互调整及问题修复。
+## React Migration — Homepage V2.0
+- Migrated homepage to React and TypeScript.
+- Implemented modular homepage sections.
+- Refined navigation and brand morph interactions.
+- Updated featured events layout.
+- Refined partners logo gallery.
+- Added footer social icon interactions.
+- Added homepage hover states.
+- Improved code readability and documentation.
 
-本项目为独立开发与测试环境，不直接影响 BUCSSA 正式网站。
+## 0.2.0 — Homepage Final Fix and readability pass
+- Added Figma Homepage Sections 01–05 and the V2B Footer using local assets.
+- Corrected the Featured Events image order and caption placement.
+- Restored the Partners desktop grid to four columns × two rows with Figma-informed logo bounds.
+- Removed CSSA荣誉墙 from first-level navigation and fixed brand width measurement during the scroll morph.
+- Formatted the revised styled-components, added types, semantic naming, and maintenance comments.
 
-## Navigation Morph v1.0
-
-### 新增功能（Added）
-
-- 将品牌文字收起与展开动画整合至现有 BUCSSA 导航系统。
-- 导航进入悬浮状态时，BUCSSA 品牌文字会平滑收起。
-- 导航返回 Hero 区域时，BUCSSA 品牌文字会平滑展开。
-
-### 交互优化（Improved）
-
-- 保留现有导航栏的弹性宽度过渡效果。
-- 保留现有桌面端与移动端的响应式导航行为。
-- 保持 Language Switch 和 Mobile Hamburger Menu 的现有功能与交互。
-
-## [v0.1.0] — 2026-11-11
-
-版本状态：初始测试版本
-
-### 新增功能（Added）
-
-- 完成基于 Figma 设计稿的独立前端 Demo。
-- 实现 Hero 首页主要视觉布局。
-- 实现响应式导航栏。
-- 实现滚动后切换为悬浮导航栏的交互。
-- 实现移动端 Hamburger Menu 及展开、关闭动画。
-- 添加中英文切换按钮的基础交互状态。
-- 完成 Footer 基础布局及社交媒体图标。
-- 建立独立 GitHub 测试仓库。
-
-### 视觉优化（Improved）
-
-- 调整 Hero 页面文字与按钮布局。
-- 优化 CSSA Portal 按钮的玻璃材质效果。
-- 统一 Hero 页面 Language Switch 与 Hamburger 的半透明玻璃风格。
-- 优化按钮 Hover 状态与过渡动画。
-- 保留 Scrolled Navigation 的品牌红色视觉设计。
-- 调整移动端导航栏的响应式表现。
-
-### 已知限制（Known Limitations）
-
-- Language Switch 暂未实现真正的中英文内容切换。
-- 部分网站内容仍为占位内容。
-- 尚未完成全部设备尺寸的响应式测试。
-- CSS 中存在部分重复样式，后续需要整理。
-
-### 后续开发计划（Roadmap）
-
-- CSS 样式整理与重复代码清理
-- Responsive QA
-- Language Switch 动画优化
-- 完整中英文内容切换
-- 其他网站页面开发
-- 无障碍体验优化
-
-## 文档维护规则
-
-### README.md
-
-- 使用中文，主要介绍项目定位、功能、技术栈和运行方式。
-- 重大功能变化时更新。
-
-### CHANGELOG.md
-
-- 使用中文，记录实际完成的功能和设计变化。
-- 版本条目按 Added / Improved / Fixed / Removed 分类。
-- 未完成的功能不得记录为已完成。
-- 不需要每次修改 CSS 都升级版本。
-- 下一次有意义的更新可使用 v0.1.1。
+## 0.1.0 — Local migration
+- Migrated uploaded HTML structure into React TypeScript components.
+- Replaced DOM event handlers with React hooks/state while retaining protected navigation CSS selectors.
+- Preserved demo CSS using styled-components GlobalStyles and original assets.
+- No Figma homepage sections or production deployment yet.
