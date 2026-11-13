@@ -21,10 +21,21 @@ BUCSSA Website Test 是一个用于 BUCSSA 网站的独立前端开发与测试�
 * Hero Section： 首页主视觉区域
 * Responsive Navigation： 响应式导航栏
 * Floating Navigation： 页面滚动后切换为悬浮导航栏
+* Navigation Morph v1.0：品牌文字会随导航状态在 Hero 与悬浮导航之间平滑收起和展开
 * Mobile Hamburger Menu： 移动端折叠菜单
 * Language Switch： 中英文切换按钮（目前仅为交互演示，尚未实现实际语言切换）
 * Global Footer： 全局页脚及社交媒体图标
 * Glass-style UI： 半透明玻璃质感交互控件
+
+## 导航形态切换（Navigation Morph）
+
+Navigation Morph v1.0 将品牌文字的动画整合到现有 BUCSSA 导航系统中。
+
+* Hero 状态：导航位于首页 Hero 区域时，BUCSSA 品牌文字保持展开显示。
+* 悬浮导航状态：页面滚动使导航进入 Floating Navigation 状态时，品牌文字平滑收起，同时保留原有的弹性导航宽度过渡效果。
+* 返回 Hero：页面返回 Hero 区域后，品牌文字会平滑展开。
+
+该交互保持现有响应式导航行为：桌面端延续品牌文字与导航形态切换；移动端的 Language Switch 和 Mobile Hamburger Menu 保持原有功能与交互方式。
 
 ## 技术栈（Tech Stack）
 
