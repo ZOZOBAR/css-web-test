@@ -1,24 +1,13 @@
-# Changelog
+# 更新日志
 
-## React Migration — Homepage V2.0
-- Migrated homepage to React and TypeScript.
-- Implemented modular homepage sections.
-- Refined navigation and brand morph interactions.
-- Updated featured events layout.
-- Refined partners logo gallery.
-- Added footer social icon interactions.
-- Added homepage hover states.
-- Improved code readability and documentation.
+## Homepage V2.0 — React 迁移
 
-## 0.2.0 — Homepage Final Fix and readability pass
-- Added Figma Homepage Sections 01–05 and the V2B Footer using local assets.
-- Corrected the Featured Events image order and caption placement.
-- Restored the Partners desktop grid to four columns × two rows with Figma-informed logo bounds.
-- Removed CSSA荣誉墙 from first-level navigation and fixed brand width measurement during the scroll morph.
-- Formatted the revised styled-components, added types, semantic naming, and maintenance comments.
-
-## 0.1.0 — Local migration
-- Migrated uploaded HTML structure into React TypeScript components.
-- Replaced DOM event handlers with React hooks/state while retaining protected navigation CSS selectors.
-- Preserved demo CSS using styled-components GlobalStyles and original assets.
-- No Figma homepage sections or production deployment yet.
+- 完成 React + TypeScript 前端项目迁移。
+- 完成 Homepage 组件化。
+- 完善 Navigation 交互与 Brand Morph 动画。
+- 更新 Featured Events 布局。
+- 完善 Partners Logo Gallery。
+- 增加 Footer 社交图标与 Hover 动画。
+- 增加 Student Resources、Join Us 与 About 按钮交互。
+- 完成 TypeScript 检查与 Vite Build 验证。
+- 迁移至 GitHub 测试仓库 `ZOZOBAR/css-web-test`。
