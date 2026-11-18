@@ -114,11 +114,28 @@ const Gallery = styled.div`
 
 styled-components 会把 `@media` 规则排在普通规则**后面**。如果一个值既要随状态变（比如导航滚动后），又要在手机上不一样，不能只写在 `css\`\`` 块里，要在每个断点里用 props 判断取值。例子见 `Navigation.tsx` 里的 `BrandLogo`。
 
-## 8. 提交前
+## 8. 自动格式化和代码检查
+
+格式不靠人记，交给工具：
+
+| 工具 | 管什么 | 配置文件 |
+|---|---|---|
+| **Prettier** | 缩进、换行、引号、分号。保存时自动整理 | `.prettierrc.json` |
+| **ESLint** | 没用到的变量、Hooks 用错等真正的问题 | `eslint.config.js` |
+
+**第一次打开项目时**：VS Code 右下角会提示"安装推荐扩展"，点安装（Prettier、ESLint、styled-components）。装好后每次按 `Command + S` 保存，代码就会自动格式化。
+
+Prettier 的主要规则：每行最多 100 个字符，2 格缩进，双引号，结尾加分号。
+
+不要手动调整格式去"对齐"代码，Prettier 会改回去。
+
+## 9. 提交前
 
 ```bash
-npm run typecheck
-npm run build
+npm run check   # 类型检查 + ESLint + 格式检查，一次跑完
+npm run build   # 确认能正常构建
 ```
 
-两条都通过再提交。改了视觉的，在桌面和手机（≤740px）各看一遍。
+两条都通过再提交。`format:check` 报错的话，运行 `npm run format` 自动修好。
+
+改了视觉的，在桌面和手机（≤740px）各看一遍。

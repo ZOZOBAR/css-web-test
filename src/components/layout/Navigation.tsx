@@ -60,10 +60,10 @@ export default function Navigation() {
       return;
     }
 
-    const observer = new IntersectionObserver(
-      ([entry]) => setIsScrolled(!entry.isIntersecting),
-      { threshold: 0, rootMargin: "-90px 0px 0px 0px" },
-    );
+    const observer = new IntersectionObserver(([entry]) => setIsScrolled(!entry.isIntersecting), {
+      threshold: 0,
+      rootMargin: "-90px 0px 0px 0px",
+    });
 
     observer.observe(hero);
 
@@ -107,7 +107,12 @@ export default function Navigation() {
           {/* 中：页面链接 */}
           <NavLinks id="nav-links" $isScrolled={isScrolled} $isOpen={isMenuOpen}>
             {NAV_ITEMS.map((item) => (
-              <NavLink key={item.href} href={item.href} onClick={closeMenu} $isScrolled={isScrolled}>
+              <NavLink
+                key={item.href}
+                href={item.href}
+                onClick={closeMenu}
+                $isScrolled={isScrolled}
+              >
                 {item.label}
               </NavLink>
             ))}

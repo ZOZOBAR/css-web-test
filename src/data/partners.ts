@@ -24,12 +24,36 @@ export const PARTNERS: Partner[] = [
   // 第一行
   { name: "Alipay", src: "/assets/home/logo-alipay.png", width: "222px", height: "56px" },
   { name: "Visa", src: "/assets/home/logo-visa.png", width: "209px", height: "61px" },
-  { name: "Fantuan", src: "/assets/home/logo-fantuan.png", width: "176px", height: "74px", scale: 1.7 },
+  {
+    name: "Fantuan",
+    src: "/assets/home/logo-fantuan.png",
+    width: "176px",
+    height: "74px",
+    scale: 1.7,
+  },
   { name: "BOSS直聘", src: "/assets/home/logo-boss.png", width: "89px", height: "89px" },
 
   // 第二行
   { name: "Weee!", src: "/assets/home/logo-weee.png", width: "200px", height: "61px" },
-  { name: "iQIYI", src: "/assets/home/logo-iqiyi.png", width: "273px", height: "61px", scale: 2.97 },
-  { name: "OSSC 留学生网", src: "/assets/home/logo-ossc.png", width: "181px", height: "71px", scale: 3.16 },
-  { name: "刘一手火锅", src: "/assets/home/logo-liuyishou.png", width: "115px", height: "112px", scale: 1.82 },
+  {
+    name: "iQIYI",
+    src: "/assets/home/logo-iqiyi.png",
+    width: "273px",
+    height: "61px",
+    scale: 2.97,
+  },
+  {
+    name: "OSSC 留学生网",
+    src: "/assets/home/logo-ossc.png",
+    width: "181px",
+    height: "71px",
+    scale: 3.16,
+  },
+  {
+    name: "刘一手火锅",
+    src: "/assets/home/logo-liuyishou.png",
+    width: "115px",
+    height: "112px",
+    scale: 1.82,
+  },
 ];

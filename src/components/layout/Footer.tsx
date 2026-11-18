@@ -37,7 +37,9 @@ export default function Footer() {
             <IdentityLogo src="/assets/logo.png" alt="BUCSSA 标志" />
             <div>
               <IdentityName>波士顿大学中国学生学者联合会</IdentityName>
-              <IdentityEnglish>Boston University Chinese Students &amp; Scholars Association</IdentityEnglish>
+              <IdentityEnglish>
+                Boston University Chinese Students &amp; Scholars Association
+              </IdentityEnglish>
             </div>
           </Identity>
 

@@ -42,12 +42,7 @@ const Container = styled.section`
   height: min(100svh, 970px);
   min-height: 650px;
   background-image:
-    linear-gradient(
-      180deg,
-      rgba(8, 12, 18, 0.3),
-      rgba(8, 12, 18, 0.12) 42%,
-      rgba(8, 12, 18, 0.48)
-    ),
+    linear-gradient(180deg, rgba(8, 12, 18, 0.3), rgba(8, 12, 18, 0.12) 42%, rgba(8, 12, 18, 0.48)),
     url("/assets/home/hero-boston.png");
   background-position: center;
   background-size: cover;

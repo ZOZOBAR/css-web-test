@@ -1,5 +1,17 @@
 # 更新日志
 
+## 开发工具 — Prettier + ESLint（2026-11-18）
+
+页面视觉没有任何变化。
+
+- 新增 Prettier：统一代码格式（每行最多 100 字符、2 格缩进、双引号、分号）。配置在 `.prettierrc.json`。
+- 新增 ESLint：检查未使用变量、Hooks 用法等问题。配置在 `eslint.config.js`。
+- 新增 `.vscode/` 设置：保存时自动格式化，并推荐安装 Prettier、ESLint、styled-components 扩展。
+- 新增命令：`npm run check`（类型检查 + lint + 格式检查）、`npm run format`、`npm run lint`。
+- 用 Prettier 整理了 6 个文件的换行和对齐，没有改动任何内容。
+- 更新 `CONVENTIONS.md` 和 README 的提交前检查说明。
+- 验证：check、build 通过；22 张截图与重构前逐像素一致。
+
 ## Homepage V2.1 — 代码规范化（2026-11-18）
 
 页面视觉没有任何变化，只改代码结构。
@@ -18,7 +30,6 @@
 - 修复：Community 区块补上 `id="community"`。
 - 改进：社交图标的读屏名称改为中文（微信、小红书等）；资源列表改用 `<ul>/<li>`，卡片改用 `<article>`。
 - 新增 `CONVENTIONS.md` 代码规范。
-- 浏览器标签页标题改为"BUCSSA"。
 - 验证：typecheck、build 通过；8 种屏幕宽度（390–1440px）、滚动前后、手机菜单展开共 22 张截图与重构前逐像素一致。
 
 ## Homepage V2.0 — React 迁移

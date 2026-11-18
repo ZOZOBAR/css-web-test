@@ -32,10 +32,7 @@ const PARAGRAPH_TWO = [
   "包容性和知识追求的社群。",
 ];
 
-export const ABOUT_PARAGRAPHS: string[] = [
-  PARAGRAPH_ONE.join(" "),
-  PARAGRAPH_TWO.join(" "),
-];
+export const ABOUT_PARAGRAPHS: string[] = [PARAGRAPH_ONE.join(" "), PARAGRAPH_TWO.join(" ")];
 
 // 底部按钮
 export const ABOUT_BUTTON = {

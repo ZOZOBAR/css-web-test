@@ -89,10 +89,15 @@ npm run dev
 ```bash
 npm install          # 安装依赖
 npm run dev          # 启动本地服务器
-npm run typecheck    # TypeScript 类型检查
+npm run check        # 提交前跑：类型检查 + ESLint + 格式检查
+npm run format       # 用 Prettier 自动整理 src 里的代码格式
+npm run lint         # 只跑 ESLint
+npm run typecheck    # 只跑 TypeScript 类型检查
 npm run build        # 构建生产版本
 npm run preview      # 预览已构建版本
 ```
+
+用 VS Code 打开项目时，按提示安装推荐扩展（Prettier、ESLint）。之后保存文件会自动格式化，详见 [CONVENTIONS.md](CONVENTIONS.md)。
 
 ## Homepage 组件说明
 
@@ -122,7 +127,7 @@ Navigation 的 Brand Morph 动画依赖 Hero 的 `id="top"`，修改 Hero 时不
 - 新功能优先在独立分支开发。
 - 修改前同步最新代码。
 - Commit 信息应清楚描述修改内容。
-- 提交前运行 `npm run typecheck` 和 `npm run build`。
+- 提交前运行 `npm run check` 和 `npm run build`。
 - 不提交 `node_modules`、`dist`、敏感信息或本地环境文件。
 
 ## 当前开发状态与后续计划
