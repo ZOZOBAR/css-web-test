@@ -22,16 +22,24 @@ BUCSSA Website 2.0 是 BUCSSA 官方网站的前端开发项目。当前版本�
 ```text
 .
 ├── public/
-│   └── assets/          # 图片、Logo 和社交媒体 SVG
+│   └── assets/              # 图片、Logo 和社交媒体 SVG
 ├── src/
-│   ├── components/      # Homepage 主要组件
-│   ├── styles/          # GlobalStyles.ts 与 legacy.css
-│   ├── App.tsx          # 页面组件组合
-│   └── main.tsx         # React 入口
+│   ├── pages/               # 页面：把 section 按顺序拼起来
+│   ├── components/
+│   │   ├── layout/          # 全站共用：Navigation、Footer
+│   │   ├── common/          # 共用小组件：SectionContainer、SectionTitle
+│   │   └── home/            # 首页各 section
+│   ├── data/                # 文字、图片路径、链接
+│   ├── styles/              # GlobalStyles.ts（全局样式 + Tokens）、breakpoints.ts
+│   ├── App.tsx              # 网站外壳
+│   └── main.tsx             # React 入口
+├── CONVENTIONS.md           # 代码规范（开发前必读）
 ├── package.json
 ├── vite.config.ts
 └── tsconfig.json
 ```
+
+**写代码前请先读 [CONVENTIONS.md](CONVENTIONS.md)。**
 
 ## 如何在本地运行网站
 
@@ -88,23 +96,25 @@ npm run preview      # 预览已构建版本
 
 ## Homepage 组件说明
 
-- `Navigation.tsx`：固定导航、滚动状态、Brand Morph、移动菜单与语言切换演示；修改前应完成视觉检查。
-- `Hero.tsx`：首屏波士顿航拍背景、标题与副标题。
-- `AboutSection.tsx`：组织介绍和 About CTA。
-- `EventsSection.tsx`：Featured Events 图片与 Caption。
-- `CommunitySection.tsx`：社群活动 Gallery。
-- `StudentsSection.tsx`：新生手册、职发百宝箱和加入 BUCSSA 内容。
-- `PartnersSection.tsx`：合作伙伴 Logo Gallery。
-- `Footer.tsx`：组织信息、网站链接与社交媒体图标。
+| 编号 | 文件 | 内容 | 数据 |
+|---|---|---|---|
+| — | `layout/Navigation.tsx` | 固定导航、滚动后红色胶囊、Brand Morph、手机菜单、语言切换（演示） | `data/navigation.ts` |
+| 01 | `home/HeroSection.tsx` | 首屏波士顿背景、标题与副标题 | — |
+| 02 | `home/AboutSection.tsx` | 组织介绍与按钮 | `data/about.ts` |
+| 03 | `home/EventsSection.tsx` | 精选活动照片与图注 | `data/events.ts` |
+| 04 | `home/CommunitySection.tsx` | 社群活动三图画廊 | `data/community.ts` |
+| 05 | `home/ResourcesSection.tsx` | 新生手册、职发百宝箱、加入我们 | `data/resources.ts` |
+| 06 | `home/PartnersSection.tsx` | 合作伙伴 Logo 墙 | `data/partners.ts` |
+| — | `layout/Footer.tsx` | 组织信息、链接、社交图标 | `data/footer.ts` |
 
 ## 样式与资源管理
 
-组件使用 Styled Components 编写局部样式。`src/styles/GlobalStyles.ts` 负责载入全局样式，`src/styles/legacy.css` 保留迁移阶段所需的全局和 Navigation 样式。
+全站只有一个全局样式文件 `src/styles/GlobalStyles.ts`，里面是 Reset 和 Design Tokens（颜色、字体、间距变量）。其余样式都写在各组件里（Styled Components）。详见 [CONVENTIONS.md](CONVENTIONS.md)。
 
 - Homepage 图片和合作伙伴 Logo：`public/assets/home/`
 - 组织 Logo 和社交媒体 SVG：`public/assets/`
 
-修改全局样式前请确认不会影响其他组件；Navigation 的 DOM、布局和 Brand Morph 动画不应因普通页面修改而改变。
+Navigation 的 Brand Morph 动画依赖 Hero 的 `id="top"`，修改 Hero 时不要改这个 id。
 
 ## GitHub 协作规范
 
