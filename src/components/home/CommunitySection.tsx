@@ -4,7 +4,10 @@
  * 位置：首页第 4 块（Events 之后，Resources 之前）
  * 结构：标题 → 三图画廊
  * 布局：桌面 1 大 2 小三列；手机单列
- * 数据：src/data/community.ts
+ * 数据：src/data/community.ts（每张图的取景位置也在那里）
+ *
+ * 设计数值（Figma HI-FI，换算到 1440px）：
+ *   图片高 410px，宽度比例 640 : 296 : 280，圆角 10px
  * ========================================================== */
 import styled from "styled-components";
 import { SectionContainer, SectionTitle } from "../common/Section";
@@ -21,7 +24,12 @@ export default function CommunitySection() {
       {/* 三图画廊 */}
       <Gallery>
         {COMMUNITY_PHOTOS.map((photo) => (
-          <GalleryImage key={photo.src} src={photo.src} alt={photo.alt} />
+          <GalleryImage
+            key={photo.src}
+            src={photo.src}
+            alt={photo.alt}
+            $position={photo.position ?? "center"}
+          />
         ))}
       </Gallery>
     </Container>
@@ -42,16 +50,16 @@ const Container = styled(SectionContainer)`
   }
 `;
 
-// 标题
+// 标题：和图片之间隔 28px
 const Title = styled(SectionTitle)`
-  margin-bottom: 48px;
+  margin-bottom: 28px;
 `;
 
-// 画廊：桌面三列，第一张大图占 2.15 份
+// 画廊：桌面三列，宽度比例按 Figma 640 : 296 : 280
 const Gallery = styled.div`
   display: grid;
-  grid-template-columns: 2.15fr 1fr 1fr;
-  gap: 32px;
+  grid-template-columns: 640fr 296fr 280fr;
+  gap: 24px;
 
   @media ${MEDIA.mobile} {
     grid-template-columns: 1fr;
@@ -59,17 +67,14 @@ const Gallery = styled.div`
   }
 `;
 
-// 图片：统一高度和圆角；第二张单独调整取景位置
-const GalleryImage = styled.img`
+// 图片：统一高度和圆角；取景位置由数据里的 position 决定
+const GalleryImage = styled.img<{ $position: string }>`
   display: block;
   width: 100%;
-  height: 480px;
-  border-radius: var(--radius-image);
+  height: 410px;
+  border-radius: 10px;
   object-fit: cover;
-
-  &:nth-child(2) {
-    object-position: 61% center;
-  }
+  object-position: ${({ $position }) => $position};
 
   @media ${MEDIA.mobile} {
     height: 260px;

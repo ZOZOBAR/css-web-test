@@ -50,6 +50,7 @@ export const GlobalStyles = createGlobalStyle`
     /* 文字色 */
     --color-text-body: #1a1a1a;          /* body 默认文字 */
     --color-text-heading: #26292b;       /* About / Events / Community 正文 */
+    --color-text-paragraph: #2b2b2b;     /* About 介绍段落（Figma） */
     --color-text-strong: #1f1f1f;        /* Resources / Partners 正文 */
     --color-text-footer: #252525;
     --color-text-secondary: #616161;     /* section 副标题 */
