@@ -18,6 +18,7 @@
 - 修复：Community 区块补上 `id="community"`。
 - 改进：社交图标的读屏名称改为中文（微信、小红书等）；资源列表改用 `<ul>/<li>`，卡片改用 `<article>`。
 - 新增 `CONVENTIONS.md` 代码规范。
+- 浏览器标签页标题改为"BUCSSA"。
 - 验证：typecheck、build 通过；8 种屏幕宽度（390–1440px）、滚动前后、手机菜单展开共 22 张截图与重构前逐像素一致。
 
 ## Homepage V2.0 — React 迁移
