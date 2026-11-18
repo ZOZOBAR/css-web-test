@@ -22,8 +22,18 @@ export type Partner = {
 
 export const PARTNERS: Partner[] = [
   // 第一行
-  { name: "Alipay", src: "/assets/home/logo-alipay.png", width: "222px", height: "56px" },
-  { name: "Visa", src: "/assets/home/logo-visa.png", width: "209px", height: "61px" },
+  {
+    name: "Alipay",
+    src: "/assets/home/logo-alipay.png",
+    width: "222px",
+    height: "56px",
+  },
+  {
+    name: "Visa",
+    src: "/assets/home/logo-visa.png",
+    width: "209px",
+    height: "61px",
+  },
   {
     name: "Fantuan",
     src: "/assets/home/logo-fantuan.png",
@@ -31,10 +41,20 @@ export const PARTNERS: Partner[] = [
     height: "74px",
     scale: 1.7,
   },
-  { name: "BOSS直聘", src: "/assets/home/logo-boss.png", width: "89px", height: "89px" },
+  {
+    name: "BOSS直聘",
+    src: "/assets/home/logo-boss.png",
+    width: "89px",
+    height: "89px",
+  },
 
   // 第二行
-  { name: "Weee!", src: "/assets/home/logo-weee.png", width: "200px", height: "61px" },
+  {
+    name: "Weee!",
+    src: "/assets/home/logo-weee.png",
+    width: "200px",
+    height: "61px",
+  },
   {
     name: "iQIYI",
     src: "/assets/home/logo-iqiyi.png",
