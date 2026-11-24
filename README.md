@@ -4,7 +4,7 @@
 
 ## 项目简介
 
-BUCSSA Website 2.0 是 BUCSSA 官方网站的前端开发项目。当前版本为 React + TypeScript 项目，Homepage 已完成第一阶段视觉设计与组件迁移。本仓库用于开发、测试和团队协作，不是正式生产环境。
+BUCSSA Website 2.0 是 BUCSSA 官方网站的前端开发项目。当前版本为 React + TypeScript 项目：首页已完成第一阶段代码规范化；第二阶段按 Figma「HI-FI · 子页面」做好了活动、关于我们、部门、荣誉墙、合作、新生手册等子页面。本仓库用于开发、测试和团队协作，不是正式生产环境。
 
 ## 技术栈
 
@@ -12,6 +12,7 @@ BUCSSA Website 2.0 是 BUCSSA 官方网站的前端开发项目。当前版本�
 - TypeScript
 - Vite
 - Styled Components
+- React Router（页面网址）
 - HTML / CSS
 - Git / GitHub
 
@@ -22,17 +23,28 @@ BUCSSA Website 2.0 是 BUCSSA 官方网站的前端开发项目。当前版本�
 ```text
 .
 ├── public/
-│   └── assets/              # 图片、Logo 和社交媒体 SVG
+│   └── assets/
+│       ├── home/            # 首页图片、合作伙伴 Logo
+│       ├── shared/          # 子页面共用的波士顿横幅
+│       ├── events/          # 活动页：每个活动一个文件夹 + posters/ 海报 + past/ 往期
+│       ├── about/           # 关于我们：合照、logos/ 部门 Logo、每个部门一个文件夹
+│       └── honor/           # 荣誉墙：每个学年一个文件夹
 ├── src/
-│   ├── pages/               # 页面：把 section 按顺序拼起来
+│   ├── pages/               # 页面：把 section 按顺序拼起来（一个网址一个文件）
 │   ├── components/
-│   │   ├── layout/          # 全站共用：Navigation、Footer
-│   │   ├── common/          # 共用小组件：SectionContainer、SectionTitle
-│   │   └── home/            # 首页各 section
+│   │   ├── layout/          # 全站共用：Navigation、Footer、ScrollManager
+│   │   ├── common/          # 共用小组件：PageHero、SectionHeading、按钮、SmartLink 等
+│   │   ├── home/            # 首页各 section
+│   │   ├── events/          # 活动总览 + 活动详情的 section
+│   │   ├── about/           # 关于我们的 section
+│   │   ├── department/      # 部门详情的 section
+│   │   ├── honor/           # 荣誉墙
+│   │   └── contact/         # 联系与合作的 section
 │   ├── data/                # 文字、图片路径、链接
 │   ├── styles/              # GlobalStyles.ts（全局样式 + Tokens）、breakpoints.ts
-│   ├── App.tsx              # 网站外壳
+│   ├── App.tsx              # 网站外壳 + 路由表
 │   └── main.tsx             # React 入口
+├── vercel.json              # 让 /about 这类网址直接打开也不会 404
 ├── CONVENTIONS.md           # 代码规范（开发前必读）
 ├── package.json
 ├── vite.config.ts
@@ -99,11 +111,30 @@ npm run preview      # 预览已构建版本
 
 用 VS Code 打开项目时，按提示安装推荐扩展（Prettier、ESLint）。之后保存文件会自动格式化，详见 [CONVENTIONS.md](CONVENTIONS.md)。
 
+## 页面与网址
+
+| 网址 | 页面文件 | 内容数据 | Figma（HI-FI · 子页面） | 原网站 |
+|---|---|---|---|---|
+| `/` | `HomePage.tsx` | 见下方「Homepage 组件说明」 | 首页 HI-FI | `/zh` |
+| `/events` | `EventsPage.tsx` | `data/eventsOverview.ts` + `eventDetails.ts` | A · 活动总览 | `/zh/Activity` |
+| `/events/:slug` | `EventDetailPage.tsx` | `data/eventDetails.ts` | B · 活动详情模板 | `/zh/Activity/Activity_…` |
+| `/about` | `AboutPage.tsx` | `data/aboutPage.ts` + `departments.ts` | C · 关于我们 | `/zh/About` |
+| `/about/:dept` | `DepartmentPage.tsx` | `data/departments.ts` | D · 部门详情模板 | `/zh/About/About_…` |
+| `/about/honor-wall` | `HonorWallPage.tsx` | `data/honorWall.ts` | E · 荣誉墙 | `/zh/Honor_Wall` |
+| `/contact` | `ContactPage.tsx` | `data/contact.ts` + `partners.ts` | F · 联系与合作 | `/zh/Partnership` |
+| `/handbook` | `HandbookPage.tsx` | 页面文件内 | G · 新生手册（等 PDF） | 原 PDF 已失效 |
+| 其他 | `NotFoundPage.tsx` | — | — | — |
+
+活动 slug：`xinsheng` 新生见面会、`feichengwurao` 非诚勿扰、`guoqing` 中秋国庆晚会、`xinchun` 新春嘉年华、`biye` 毕业舞会。
+部门 slug：`zhuxituan`、`jishubu`、`shichangbu`、`shiwubu`、`wenyubu`、`xuanchuanbu`、`yingshibu`、`zhifabu`（和原网站网址同名）。
+
+暂时链接到原网站的（新版还没做）：往期精彩活动、职发百宝箱、关于网站。
+
 ## Homepage 组件说明
 
 | 编号 | 文件 | 内容 | 数据 |
 |---|---|---|---|
-| — | `layout/Navigation.tsx` | 固定导航、滚动后红色胶囊、Brand Morph、手机菜单、语言切换（演示） | `data/navigation.ts` |
+| — | `layout/Navigation.tsx` | 全站导航：三种状态（顶部全宽透明 → 滚动 100px 深色玻璃胶囊 → 滚出 Hero 红色胶囊）、hover 下拉、Brand Morph、手机菜单、语言切换（演示） | `data/navigation.ts` |
 | 01 | `home/HeroSection.tsx` | 首屏波士顿背景、标题与副标题 | — |
 | 02 | `home/AboutSection.tsx` | 组织介绍与按钮 | `data/about.ts` |
 | 03 | `home/EventsSection.tsx` | 精选活动照片与图注 | `data/events.ts` |
@@ -136,7 +167,7 @@ npm run preview      # 预览已构建版本
 
 | 内容 | 位置 | 字段 / 说明 |
 |---|---|---|
-| 5 个导航链接 | `data/navigation.ts` | `NAV_ITEMS`：`label` 显示文字，`href` 跳转地址 |
+| 5 个栏目 + 下拉子项 | `data/navigation.ts` | `NAV_ITEMS`：`label` 显示文字，`href` 跳转地址，`match` 当前页判断，`children` 下拉子项 |
 | Logo 图片 | 组件内 | `/assets/logo.png` |
 | "BUCSSA" 文字、"跳转到内容"、中 / EN | 组件内 | — |
 
@@ -206,6 +237,22 @@ npm run preview      # 预览已构建版本
 
 注意：社交链接目前都指向 `#footer`，拿到正式账号地址后再替换。
 
+### 子页面内容
+
+子页面的文字全部来自原网站 bucssa.org，**只改排版，不改内容**。每个 data 文件开头写了来源和「已批准的新增 / 待定」。
+
+| 要改什么 | 改哪里 |
+|---|---|
+| 某个活动的文字、照片 | `data/eventDetails.ts` 里对应的一整块（按 slug 找） |
+| 新增一个活动详情页 | 在 `EVENT_DETAILS` 里复制一整块，改 `slug` 和内容；活动总览和「更多活动」会自动出现 |
+| 公众号活动列表、推文链接 | `data/eventsOverview.ts` 的 `WECHAT_EVENTS`（填了 `href` 才会显示「阅读推文 ↗」） |
+| 某个部门的介绍、负责人 | `data/departments.ts` 里对应的一整块；没写的部分（如 `motto`、`features`）页面上就不显示 |
+| 荣誉墙名单、加新一届 | `data/honorWall.ts`（说明在文件开头） |
+| 合作部门介绍、邮箱 | `data/contact.ts` |
+| 导航下拉子项 | `data/navigation.ts` |
+
+**换图片的步骤**：子页面的图片放在 `public/assets/events/`、`about/`、`honor/` 下，统一用 webp、长边约 1600–2400px（人物照 900px），再到对应 data 文件里改路径。文件名只用英文、数字和 `-`。
+
 ### 页面内的跳转地址
 
 首页各 section 的 `id`，链接写 `#id` 就能跳转过去：
@@ -221,14 +268,17 @@ npm run preview      # 预览已构建版本
 | Partners | `partners` |
 | Footer | `footer` |
 
+子页面也可以带 `#`：`/about#departments`（部门卡片）、`/events#past`（精彩回顾）、`/contact#contact-form`（联系表单）、`/contact#partners`（合作伙伴）。所有页面的 Hero 都是 `id="top"`。
+
 ## 样式与资源管理
 
 全站只有一个全局样式文件 `src/styles/GlobalStyles.ts`，里面是 Reset 和 Design Tokens（颜色、字体、间距变量）。其余样式都写在各组件里（Styled Components）。详见 [CONVENTIONS.md](CONVENTIONS.md)。
 
 - Homepage 图片和合作伙伴 Logo：`public/assets/home/`
+- 子页面图片：`public/assets/shared/`、`events/`、`about/`、`honor/`
 - 组织 Logo 和社交媒体 SVG：`public/assets/`
 
-Navigation 的 Brand Morph 动画依赖 Hero 的 `id="top"`，修改 Hero 时不要改这个 id。
+Navigation 判断"滚出 Hero"依赖每个页面 Hero 的 `id="top"`（子页面的 Hero 是共用组件 `common/PageHero.tsx`），修改 Hero 时不要改这个 id。
 
 ## GitHub 协作规范
 
@@ -241,6 +291,9 @@ Navigation 的 Brand Morph 动画依赖 Hero 的 `id="top"`，修改 Hero 时不
 
 ## 当前开发状态与后续计划
 
-Homepage 已完成第一阶段：代码规范化、Prettier / ESLint 接入、About 与 Community 按 Figma 对齐。线上预览：<https://css-web-test.vercel.app>
+- 第一阶段（完成）：首页代码规范化、Prettier / ESLint 接入、About 与 Community 按 Figma 对齐。
+- 第二阶段（完成第一版）：按 Figma「HI-FI · 子页面」做好活动总览、5 个活动详情、关于我们、8 个部门详情、荣誉墙、联系与合作、新生手册（占位），导航改为三种状态 + hover 下拉。
+- 等团队反馈：Figma 各页「待定」卡（推文链接、负责人名单以哪届为准、技术部合影原图、表单发送方式、新生手册 PDF 等），以及手机端细节。
+- 之后：与 BUCSSA 正式开发仓库整合。
 
-第二阶段计划开发其余 10 个页面（活动总览、4 个大活动详情、小活动、新生手册、学联与部门介绍、历届成员、合作与联系），之后再与 BUCSSA 正式开发仓库整合。
+线上预览：<https://css-web-test.vercel.app>

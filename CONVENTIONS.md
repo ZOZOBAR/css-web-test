@@ -12,16 +12,23 @@ src/
 ├── pages/                   # 一个页面一个文件，负责把 section 按顺序拼起来
 │   └── HomePage.tsx
 ├── components/
-│   ├── layout/              # 全站共用：Navigation、Footer
-│   ├── common/              # 多个 section 共用的小组件：SectionContainer、SectionTitle 等
-│   └── home/                # 首页专用的 section，一个 section 一个文件
+│   ├── layout/              # 全站共用：Navigation、Footer、ScrollManager
+│   ├── common/              # 多个 section 共用的小组件：SectionContainer、PageHero、SectionHeading 等
+│   ├── home/                # 首页专用的 section，一个 section 一个文件
+│   └── events/ about/ …     # 子页面的 section，按页面分文件夹
 ├── data/                    # 文字、图片路径、链接等内容，和组件代码分开
 └── styles/
     ├── GlobalStyles.ts      # 全局样式 + Design Tokens
     └── breakpoints.ts       # 断点
 ```
 
-新页面照着首页来：在 `components/` 下新建一个文件夹（比如 `events/`），在 `pages/` 下新建一个页面文件。
+新页面照着首页来：在 `components/` 下新建一个文件夹（比如 `events/`），在 `pages/` 下新建一个页面文件，再到 `App.tsx` 的 `ROUTES` 里加一行网址。
+
+子页面的通用写法：
+- 顶部大图用 `common/PageHero`（`id="top"` 已内置，导航靠它判断状态）。
+- 每一块用 `PageSection` 做外框，标题用 `SectionHeading`（红色小标题 + 大标题）。
+- 上一块已经留了下边距时，下一块写 `$flush="top"`，避免两段空白叠加。
+- 链接一律用 `SmartLink` 或基于它的按钮，`"/xxx"` 站内、`"https://…"` 外部会自动处理。
 
 ## 2. 样式分三层
 
