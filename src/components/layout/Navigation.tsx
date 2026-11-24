@@ -1,16 +1,27 @@
 /* ==========================================================
  * Layout · Navigation 顶部导航（全站共用）
  *
- * 两种状态：
- *   默认    → 在 Hero 上方，透明背景，显示 Logo + "BUCSSA" 文字
- *   滚动后  → 离开 Hero 后变成居中的红色胶囊，"BUCSSA" 文字收起
+ * 三种状态（2026-11-18 定，Figma H · 导航状态）：
+ *   top    在 Hero 顶部、还没滚动 → 全宽透明，显示 Logo + "BUCSSA" 文字
+ *   glass  开始滚动（超过 100px），还在 Hero 里 → 收成深色玻璃胶囊，"BUCSSA" 文字收起
+ *   solid  滚出 Hero → 玻璃胶囊变成红色实体胶囊（只换颜色，宽度不再变）
+ *   滚回顶部时反向播放。
+ *
+ * 为什么要有 glass：以前要等整个 Hero 滚完才变胶囊，中间一整屏导航没有底色，
+ *   Hero 大标题从导航下面穿过，两层白字叠在一起看不清。
+ *
+ * 下拉菜单（桌面）：鼠标停在有子项的栏目上 0.1s 后展开，离开 0.2s 后收起；
+ *   在 top / glass 状态是深色玻璃面板，在 solid 状态是红色面板；
+ *   展开时页面加一层 20% 暗色遮罩。键盘 Tab 聚焦栏目也会展开，Esc 关闭。
+ *   栏目本身可以点，进入总览页。
  *
  * 结构：
  *   SkipLink           跳到正文（键盘用户用）
+ *   Dim                下拉展开时的页面暗色遮罩
  *   Header
  *     └ Nav
  *         ├ Brand        Logo + BUCSSA 文字（Brand Morph 动画）
- *         ├ NavLinks     页面链接（手机端变成下拉菜单）
+ *         ├ NavLinks     栏目 + 下拉（手机端变成汉堡菜单，子项直接列出）
  *         └ NavActions   语言切换 + 手机菜单按钮
  *
  * 响应式：
@@ -19,23 +30,40 @@
  *
  * 数据：src/data/navigation.ts
  * ========================================================== */
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type FocusEvent } from "react";
+import { useLocation } from "react-router-dom";
 import styled, { css } from "styled-components";
-import { NAV_ITEMS } from "../../data/navigation";
+import SmartLink from "../common/SmartLink";
+import { NAV_ITEMS, type NavItem } from "../../data/navigation";
 import { MEDIA } from "../../styles/breakpoints";
 
-// Hero 的 id。导航通过它判断"是否已经滚出 Hero"。
+// Hero 的 id。导航通过它判断"是否已经滚出 Hero"。每个页面的 Hero 都用这个 id。
 const HERO_ID = "top";
+
+// 滚动超过多少像素，从 top 变成 glass（在大标题碰到导航之前收起）
+const COLLAPSE_AT = 100;
+
+// 下拉菜单：展开延迟 / 收起延迟（毫秒）
+const OPEN_DELAY = 100;
+const CLOSE_DELAY = 200;
 
 // 所有展开/收起动画共用的缓动曲线
 const EASE_OUT = "cubic-bezier(0.22, 1, 0.36, 1)";
 
 /* ---------- 组件 ---------- */
 export default function Navigation() {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { pathname } = useLocation();
+  const [isCollapsed, setIsCollapsed] = useState(false); // 滚动超过 COLLAPSE_AT
+  const [isPastHero, setIsPastHero] = useState(false); // 已经滚出 Hero
+  const [isMenuOpen, setIsMenuOpen] = useState(false); // 手机菜单
+  const [openIndex, setOpenIndex] = useState<number | null>(null); // 当前展开的下拉
   const [isEnglish, setIsEnglish] = useState(false);
   const brandTextRef = useRef<HTMLSpanElement>(null);
+  const timerRef = useRef<number | undefined>(undefined);
+
+  // 胶囊形状：glass 和 solid 都是；红色：只有 solid
+  const isScrolled = isCollapsed || isPastHero;
+  const isSolid = isPastHero;
 
   // 测量 "BUCSSA" 文字的完整宽度，存到 CSS 变量 --brand-text-w。
   // 收起动画需要知道从多宽收到 0。
@@ -52,7 +80,17 @@ export default function Navigation() {
     document.documentElement.style.setProperty("--brand-text-w", `${width}px`);
   };
 
-  // 监听 Hero：Hero 离开屏幕顶部 90px 以内时，切换到"滚动后"状态
+  // 监听滚动距离：超过 COLLAPSE_AT 收成胶囊
+  useEffect(() => {
+    const update = () => setIsCollapsed(window.scrollY > COLLAPSE_AT);
+
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+
+    return () => window.removeEventListener("scroll", update);
+  }, []);
+
+  // 监听 Hero：Hero 离开屏幕顶部 90px 以内时，变成红色。换页后重新找新页面的 Hero。
   useEffect(() => {
     const hero = document.getElementById(HERO_ID);
 
@@ -60,7 +98,8 @@ export default function Navigation() {
       return;
     }
 
-    const observer = new IntersectionObserver(([entry]) => setIsScrolled(!entry.isIntersecting), {
+    // 开始观察时会立刻回调一次，所以换页后状态会马上更新
+    const observer = new IntersectionObserver(([entry]) => setIsPastHero(!entry.isIntersecting), {
       threshold: 0,
       rootMargin: "-90px 0px 0px 0px",
     });
@@ -68,7 +107,7 @@ export default function Navigation() {
     observer.observe(hero);
 
     return () => observer.disconnect();
-  }, []);
+  }, [pathname]);
 
   // 未滚动时：页面加载、字体加载完成、窗口大小改变，都重新测量一次
   useEffect(() => {
@@ -83,8 +122,57 @@ export default function Navigation() {
     return () => window.removeEventListener("resize", measureBrandText);
   }, [isScrolled]);
 
+  // 换页时关掉手机菜单和下拉（render 期间比较上一次的网址，React 推荐写法）
+  const [lastPathname, setLastPathname] = useState(pathname);
+  if (pathname !== lastPathname) {
+    setLastPathname(pathname);
+    setIsMenuOpen(false);
+    setOpenIndex(null);
+  }
+
+  // 下拉：鼠标进入 → 延迟展开；已经有一个展开时，直接切换（面板不收起）
+  const openDropdown = (index: number) => {
+    window.clearTimeout(timerRef.current);
+
+    if (openIndex !== null) {
+      setOpenIndex(index);
+      return;
+    }
+
+    timerRef.current = window.setTimeout(() => setOpenIndex(index), OPEN_DELAY);
+  };
+
+  // 下拉：鼠标离开 → 延迟收起
+  const closeDropdown = () => {
+    window.clearTimeout(timerRef.current);
+    timerRef.current = window.setTimeout(() => setOpenIndex(null), CLOSE_DELAY);
+  };
+
+  // 下拉：键盘焦点离开整个栏目（包括子项）时收起
+  const handleBlur = (event: FocusEvent<HTMLLIElement>) => {
+    if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+      closeDropdown();
+    }
+  };
+
+  // 点了任何链接：收起所有菜单
+  const closeAll = () => {
+    window.clearTimeout(timerRef.current);
+    setOpenIndex(null);
+    setIsMenuOpen(false);
+  };
+
+  // 点 Logo：回到首页顶部（已经在首页时，网址不变，所以手动滚回顶部）
+  const handleBrandClick = () => {
+    closeAll();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  // 当前所在栏目："/" 只匹配首页，其余按网址开头匹配
+  const isActive = (item: NavItem) =>
+    item.match === "/" ? pathname === "/" : pathname.startsWith(item.match);
+
   const toggleMenu = () => setIsMenuOpen((isOpen) => !isOpen);
-  const closeMenu = () => setIsMenuOpen(false);
   const toggleLanguage = () => setIsEnglish((english) => !english);
 
   return (
@@ -92,10 +180,22 @@ export default function Navigation() {
       {/* 跳到正文：平时藏在屏幕外，按 Tab 时出现 */}
       <SkipLink href="#main">跳转到内容</SkipLink>
 
-      <Header id="site-header" $isScrolled={isScrolled}>
-        <Nav aria-label="主导航" $isScrolled={isScrolled}>
+      {/* 下拉展开时的暗色遮罩 */}
+      <Dim aria-hidden="true" $isVisible={openIndex !== null} />
+
+      <Header
+        id="site-header"
+        $isScrolled={isScrolled}
+        onKeyDown={(event) => event.key === "Escape" && closeAll()}
+      >
+        <Nav aria-label="主导航" $isScrolled={isScrolled} $isSolid={isSolid}>
           {/* 左：Logo + BUCSSA */}
-          <Brand href="#top" aria-label="BUCSSA 返回顶部" $isScrolled={isScrolled}>
+          <Brand
+            href="/"
+            aria-label="BUCSSA 首页"
+            onClick={handleBrandClick}
+            $isScrolled={isScrolled}
+          >
             <BrandLogo src="/assets/logo.png" alt="" $isScrolled={isScrolled} />
             <BrandMask aria-hidden="true" $isScrolled={isScrolled}>
               <BrandText ref={brandTextRef} $isScrolled={isScrolled}>
@@ -104,17 +204,39 @@ export default function Navigation() {
             </BrandMask>
           </Brand>
 
-          {/* 中：页面链接 */}
+          {/* 中：栏目 + 下拉 */}
           <NavLinks id="nav-links" $isScrolled={isScrolled} $isOpen={isMenuOpen}>
-            {NAV_ITEMS.map((item) => (
-              <NavLink
-                key={item.href}
-                href={item.href}
-                onClick={closeMenu}
-                $isScrolled={isScrolled}
+            {NAV_ITEMS.map((item, index) => (
+              <NavEntry
+                key={item.label}
+                onMouseEnter={() => item.children && openDropdown(index)}
+                onMouseLeave={closeDropdown}
+                onFocus={() => item.children && setOpenIndex(index)}
+                onBlur={handleBlur}
               >
-                {item.label}
-              </NavLink>
+                <NavLink
+                  href={item.href}
+                  onClick={closeAll}
+                  aria-current={isActive(item) ? "page" : undefined}
+                  $isScrolled={isScrolled}
+                >
+                  {item.label}
+                  {item.children && <Caret aria-hidden="true">⌄</Caret>}
+                </NavLink>
+
+                {item.children && (
+                  <Dropdown $isOpen={openIndex === index} $isSolid={isSolid}>
+                    {item.children.map((child) => (
+                      <li key={child.label}>
+                        <DropdownLink href={child.href} onClick={closeAll} $isSolid={isSolid}>
+                          {child.label}
+                          <DropdownArrow aria-hidden="true">→</DropdownArrow>
+                        </DropdownLink>
+                      </li>
+                    ))}
+                  </Dropdown>
+                )}
+              </NavEntry>
             ))}
           </NavLinks>
 
@@ -125,11 +247,12 @@ export default function Navigation() {
               onClick={toggleLanguage}
               aria-label="语言切换（演示）"
               $isScrolled={isScrolled}
+              $isSolid={isSolid}
             >
-              <LanguageOption $isActive={!isEnglish} $isScrolled={isScrolled}>
+              <LanguageOption $isActive={!isEnglish} $isScrolled={isScrolled} $isSolid={isSolid}>
                 中
               </LanguageOption>
-              <LanguageOption $isActive={isEnglish} $isScrolled={isScrolled}>
+              <LanguageOption $isActive={isEnglish} $isScrolled={isScrolled} $isSolid={isSolid}>
                 EN
               </LanguageOption>
             </LanguageSwitch>
@@ -140,10 +263,10 @@ export default function Navigation() {
               aria-label={isMenuOpen ? "关闭导航菜单" : "打开导航菜单"}
               aria-expanded={isMenuOpen}
               aria-controls="nav-links"
-              $isScrolled={isScrolled}
+              $isSolid={isSolid}
             >
-              <MenuBar $isScrolled={isScrolled} />
-              <MenuBar $isScrolled={isScrolled} />
+              <MenuBar $isSolid={isSolid} />
+              <MenuBar $isSolid={isSolid} />
             </MenuToggle>
           </NavActions>
         </Nav>
@@ -154,7 +277,8 @@ export default function Navigation() {
 
 /* ---------- 样式 ---------- */
 
-type ScrollProps = { $isScrolled: boolean };
+type ScrollProps = { $isScrolled: boolean }; // 胶囊形状（glass 或 solid）
+type SolidProps = { $isSolid: boolean }; // 红色实体（solid）
 
 /*
  * 写法提示：
@@ -175,6 +299,21 @@ const SkipLink = styled.a`
 
   &:focus {
     top: 10px;
+  }
+`;
+
+// 下拉展开时的页面暗色遮罩（不挡点击，手机端不显示）
+const Dim = styled.div<{ $isVisible: boolean }>`
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: rgba(0, 0, 0, 0.2);
+  opacity: ${({ $isVisible }) => ($isVisible ? 1 : 0)};
+  pointer-events: none;
+  transition: opacity 0.24s ${EASE_OUT};
+
+  @media ${MEDIA.mobile} {
+    display: none;
   }
 `;
 
@@ -204,8 +343,9 @@ const Header = styled.header<ScrollProps>`
     `}
 `;
 
-// 导航条：默认铺满；滚动后收成红色胶囊
-const Nav = styled.nav<ScrollProps>`
+// 导航条：top 铺满透明；glass 收成深色玻璃胶囊；solid 变红
+const Nav = styled.nav<ScrollProps & SolidProps>`
+  position: relative;
   display: flex;
   align-items: center;
   gap: ${({ $isScrolled }) => ($isScrolled ? "18px" : "clamp(18px, 2vw, 36px)")};
@@ -228,16 +368,21 @@ const Nav = styled.nav<ScrollProps>`
     gap: ${({ $isScrolled }) => ($isScrolled ? "18px" : "10px")};
   }
 
-  ${({ $isScrolled }) =>
+  ${({ $isScrolled, $isSolid }) =>
     $isScrolled &&
     css`
       width: min(100%, 860px);
       max-width: 860px;
       padding: 10px 22px;
       border-radius: 100px;
-      background: var(--color-brand);
-      box-shadow: 0 15px 40px rgba(36, 13, 13, 0.22);
-      backdrop-filter: blur(18px);
+      background: ${$isSolid ? "var(--color-brand)" : "rgba(var(--color-scrim), 0.38)"};
+      box-shadow: ${
+        $isSolid
+          ? "0 15px 40px rgba(36, 13, 13, 0.22)"
+          : "inset 0 0 0 1px rgba(255, 255, 255, 0.18), 0 15px 40px rgba(0, 0, 0, 0.18)"
+      };
+      backdrop-filter: blur(${$isSolid ? "18px" : "28px"});
+      -webkit-backdrop-filter: blur(${$isSolid ? "18px" : "28px"});
 
       @media ${MEDIA.tablet} {
         width: min(100%, 750px);
@@ -253,7 +398,7 @@ const Nav = styled.nav<ScrollProps>`
 /* -- Brand：Logo + BUCSSA 文字 -- */
 
 // 品牌区：滚动后文字收起，Logo 和文字之间不再留空
-const Brand = styled.a<ScrollProps>`
+const Brand = styled(SmartLink)<ScrollProps>`
   display: flex;
   flex-shrink: 0;
   align-items: center;
@@ -319,13 +464,13 @@ const BrandText = styled.span<ScrollProps>`
     `}
 `;
 
-/* -- NavLinks：页面链接 -- */
+/* -- NavLinks：栏目 + 下拉 -- */
 
 // 滚动后链接之间的间距（所有屏幕尺寸都一样）
 const SCROLLED_LINK_GAP = "clamp(10px, 1.3vw, 20px)";
 
-// 链接容器：桌面横排居中；手机端变成下拉菜单（$isOpen 控制显示）
-const NavLinks = styled.div<ScrollProps & { $isOpen: boolean }>`
+// 栏目容器：桌面横排居中；手机端变成下拉菜单（$isOpen 控制显示）
+const NavLinks = styled.ul<ScrollProps & { $isOpen: boolean }>`
   display: flex;
   flex: 1;
   align-items: center;
@@ -345,7 +490,9 @@ const NavLinks = styled.div<ScrollProps & { $isOpen: boolean }>`
     left: 20px;
     flex-direction: column;
     align-items: stretch;
-    gap: ${({ $isScrolled }) => ($isScrolled ? SCROLLED_LINK_GAP : "0")};
+    gap: 0;
+    max-height: calc(100vh - 110px);
+    overflow-y: auto;
     padding: 15px 22px;
     border-radius: 20px;
     background: var(--color-brand-dark);
@@ -363,8 +510,18 @@ const NavLinks = styled.div<ScrollProps & { $isOpen: boolean }>`
     `}
 `;
 
-// 单个链接：Hover 时变淡
-const NavLink = styled.a<ScrollProps>`
+// 一个栏目（包含它的下拉），下拉相对它定位
+const NavEntry = styled.li`
+  position: relative;
+`;
+
+// 栏目链接：Hover 时变淡；当前所在栏目下方有一条白色短横线
+const NavLink = styled(SmartLink)<ScrollProps>`
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 0;
   font-size: clamp(12px, 1vw, 15px);
   font-weight: 600;
   letter-spacing: 0.06em;
@@ -375,6 +532,18 @@ const NavLink = styled.a<ScrollProps>`
     opacity: 0.6;
   }
 
+  &[aria-current="page"]::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 18px;
+    height: 2px;
+    border-radius: 1px;
+    background: currentColor;
+    transform: translateX(-50%);
+  }
+
   ${({ $isScrolled }) =>
     $isScrolled &&
     css`
@@ -382,8 +551,115 @@ const NavLink = styled.a<ScrollProps>`
     `}
 
   @media ${MEDIA.mobile} {
+    display: flex;
     padding: 12px;
     font-size: 15px;
+
+    &[aria-current="page"]::after {
+      display: none;
+    }
+  }
+`;
+
+// 栏目旁的小箭头 ⌄（手机端不显示）
+const Caret = styled.span`
+  font-size: 0.8em;
+  opacity: 0.8;
+  transform: translateY(-2px);
+
+  @media ${MEDIA.mobile} {
+    display: none;
+  }
+`;
+
+// 下拉面板：在栏目正下方居中；top/glass 深色玻璃，solid 红色
+// 手机端：不浮动，直接列在栏目下面（缩进）
+const Dropdown = styled.ul<SolidProps & { $isOpen: boolean }>`
+  position: absolute;
+  top: calc(100% + 22px);
+  left: 50%;
+  display: grid;
+  min-width: 220px;
+  padding: 10px;
+  border-radius: 20px;
+  background: ${({ $isSolid }) => ($isSolid ? "var(--color-brand)" : "rgba(var(--color-scrim), 0.5)")};
+  box-shadow: ${({ $isSolid }) =>
+    $isSolid
+      ? "0 18px 40px rgba(36, 13, 13, 0.25)"
+      : "inset 0 0 0 1px rgba(255, 255, 255, 0.18), 0 18px 40px rgba(0, 0, 0, 0.2)"};
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  opacity: ${({ $isOpen }) => ($isOpen ? 1 : 0)};
+  visibility: ${({ $isOpen }) => ($isOpen ? "visible" : "hidden")};
+  transform: translate(-50%, ${({ $isOpen }) => ($isOpen ? "0" : "-8px")});
+  transition:
+    opacity 0.24s ${EASE_OUT},
+    transform 0.24s ${EASE_OUT},
+    visibility 0.24s;
+
+  /* 面板和栏目之间的空隙也算在 hover 范围内，鼠标移过去不会收起 */
+  &::before {
+    content: "";
+    position: absolute;
+    top: -22px;
+    right: 0;
+    left: 0;
+    height: 22px;
+  }
+
+  @media ${MEDIA.mobile} {
+    position: static;
+    min-width: 0;
+    padding: 0 0 8px 12px;
+    background: none;
+    box-shadow: none;
+    backdrop-filter: none;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+`;
+
+// 下拉子项：hover 时整行铺满色块，右侧出现 →
+const DropdownLink = styled(SmartLink)<SolidProps>`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 11px 14px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  transition:
+    background-color 0.2s,
+    transform 0.1s;
+
+  &:hover,
+  &:focus-visible {
+    outline: none;
+    background: ${({ $isSolid }) =>
+      $isSolid ? "var(--color-brand-dark)" : "rgba(255, 255, 255, 0.16)"};
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  @media ${MEDIA.mobile} {
+    padding: 8px 12px;
+    font-size: 14px;
+    opacity: 0.85;
+  }
+`;
+
+// 子项右侧箭头：hover 时才出现
+const DropdownArrow = styled.span`
+  opacity: 0;
+  transition: opacity 0.2s;
+
+  a:hover > &,
+  a:focus-visible > & {
+    opacity: 1;
   }
 `;
 
@@ -400,8 +676,8 @@ const NavActions = styled.div`
   }
 `;
 
-// 语言切换：默认是半透明玻璃胶囊；滚动后变成米色底、红字
-const LanguageSwitch = styled.button<ScrollProps>`
+// 语言切换：top / glass 是半透明玻璃胶囊；solid（红色胶囊）上变成米色底、红字
+const LanguageSwitch = styled.button<ScrollProps & SolidProps>`
   position: relative;
   isolation: isolate;
   display: flex;
@@ -433,16 +709,21 @@ const LanguageSwitch = styled.button<ScrollProps>`
     css`
       min-height: 34px;
       padding: 3px;
+      font-size: 12px;
+    `}
+
+  ${({ $isSolid }) =>
+    $isSolid &&
+    css`
       border-color: transparent;
       background: var(--color-bg-body);
       box-shadow: 0 3px 8px rgba(44, 20, 20, 0.22);
       color: var(--color-brand);
-      font-size: 12px;
     `}
 `;
 
 // "中" / "EN" 选项：当前语言有浅色底，另一个半透明
-const LanguageOption = styled.span<ScrollProps & { $isActive: boolean }>`
+const LanguageOption = styled.span<ScrollProps & SolidProps & { $isActive: boolean }>`
   display: grid;
   place-items: center;
   min-width: 40px;
@@ -455,15 +736,15 @@ const LanguageOption = styled.span<ScrollProps & { $isActive: boolean }>`
     color 0.25s ease,
     opacity 0.25s ease;
 
-  ${({ $isActive, $isScrolled }) =>
+  ${({ $isActive, $isSolid }) =>
     $isActive &&
     css`
-      background: ${$isScrolled ? "rgba(178, 77, 77, 0.1)" : "rgba(255, 255, 255, 0.23)"};
+      background: ${$isSolid ? "rgba(178, 77, 77, 0.1)" : "rgba(255, 255, 255, 0.23)"};
     `}
 `;
 
 // 汉堡按钮：只在手机端显示。打开时两条横线转成 ×
-const MenuToggle = styled.button<ScrollProps>`
+const MenuToggle = styled.button<SolidProps>`
   display: none;
   flex-direction: column;
   align-items: center;
@@ -495,9 +776,9 @@ const MenuToggle = styled.button<ScrollProps>`
     display: flex;
   }
 
-  /* 在 Hero 上方时：和语言切换一样的玻璃效果 */
-  ${({ $isScrolled }) =>
-    !$isScrolled &&
+  /* 不是红色胶囊时：和语言切换一样的玻璃效果 */
+  ${({ $isSolid }) =>
+    !$isSolid &&
     css`
       border: 1px solid rgba(255, 255, 255, 0.32);
       background: rgba(255, 255, 255, 0.14);
@@ -509,15 +790,14 @@ const MenuToggle = styled.button<ScrollProps>`
     `}
 `;
 
-// 汉堡按钮里的横线：在 Hero 上方是白色，滚动后是红色
-const MenuBar = styled.span<ScrollProps>`
+// 汉堡按钮里的横线：玻璃状态是白色，红色胶囊上是红色
+const MenuBar = styled.span<SolidProps>`
   display: block;
   width: 17px;
   height: 2px;
   margin: 2px 0;
   border-radius: 2px;
-  background: ${({ $isScrolled }) =>
-    $isScrolled ? "var(--color-brand)" : "var(--color-text-inverse)"};
+  background: ${({ $isSolid }) => ($isSolid ? "var(--color-brand)" : "var(--color-text-inverse)")};
   transition:
     transform 0.25s ease,
     opacity 0.25s ease;

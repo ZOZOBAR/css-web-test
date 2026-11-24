@@ -12,6 +12,7 @@
  *   - 按钮 230 × 52，不加箭头
  * ========================================================== */
 import styled from "styled-components";
+import SmartLink from "../common/SmartLink";
 import { SectionContainer, SectionTitle } from "../common/Section";
 import { ABOUT_BUTTON, ABOUT_PARAGRAPHS, ABOUT_PHOTOS } from "../../data/about";
 import { MEDIA } from "../../styles/breakpoints";
@@ -158,7 +159,7 @@ const Bold = styled.strong`
 `;
 
 // 红色按钮："关于我们 · 了解各部门"（Figma：230 × 52，圆角 19）
-const Button = styled.a`
+const Button = styled(SmartLink)`
   display: inline-flex;
   align-items: center;
   justify-content: center;

@@ -9,6 +9,7 @@
  * 箭头 ↗ 使用 Paperlogy 字体。Safari 下字形略有不同，已确认不处理。
  * ========================================================== */
 import styled from "styled-components";
+import SmartLink from "../common/SmartLink";
 import { SectionContainer, SectionSubtitle, SectionTitle } from "../common/Section";
 import { JOIN_CARD, RESOURCES } from "../../data/resources";
 import { MEDIA } from "../../styles/breakpoints";
@@ -171,7 +172,7 @@ const ResourceDescription = styled.p`
 `;
 
 // 箭头链接：垂直居中
-const ResourceLink = styled.a`
+const ResourceLink = styled(SmartLink)`
   align-self: center;
   color: var(--color-brand-dark);
 `;
@@ -225,7 +226,7 @@ const JoinDescription = styled.p`
 `;
 
 // 白色胶囊按钮："了解如何加入 ↗"
-const JoinButton = styled.a`
+const JoinButton = styled(SmartLink)`
   display: inline-flex;
   align-items: center;
   gap: 7px;

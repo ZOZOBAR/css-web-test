@@ -26,13 +26,17 @@ export const GlobalStyles = createGlobalStyle`
   h1,
   h2,
   h3,
+  h4,
   p,
   figure,
-  ul {
+  blockquote,
+  ul,
+  ol {
     margin: 0;
   }
 
-  ul {
+  ul,
+  ol {
     padding: 0;
     list-style: none;
   }
@@ -71,6 +75,13 @@ export const GlobalStyles = createGlobalStyle`
 
     /* 线条 */
     --color-divider: #e8e4df;
+    --color-line: rgba(38, 41, 43, 0.15);     /* 子页面列表分隔线、描边按钮 */
+
+    /* 子页面（Figma HI-FI · 子页面） */
+    --color-bg-panel: #e8e1d7;           /* 结尾号召面板、提示条的米色底 */
+    --color-bg-tag: #ece5db;             /* 小标签底色（如"职发部"） */
+    --color-text-dark: #26292b;          /* 子页面标题 */
+    --color-scrim: 8, 13, 18;            /* Hero 压色层、深色玻璃（RGB，配合 rgba() 使用） */
 
     /* 字体 */
     --font-body: "PingFang HK", "Noto Sans HK", Inter, sans-serif;
@@ -82,12 +93,22 @@ export const GlobalStyles = createGlobalStyle`
     --font-size-section-title: clamp(32px, 3.2vw, 52px);
     --font-size-section-subtitle: clamp(17px, 1.5vw, 24px);
 
+    /* 子页面字号（Figma：标题 46 / 正文 18 / 行高 1.75） */
+    --font-size-page-heading: clamp(30px, 3.2vw, 46px);
+    --font-size-body: clamp(16px, 1.25vw, 18px);
+    --line-height-body: 1.75;
+
     /* 页面左右边距 */
     --space-page-x: clamp(24px, 6vw, 103px);
     --space-page-x-mobile: 24px;
 
+    /* 子页面 section 上下间距（Figma：128） */
+    --space-section-y: clamp(72px, 8.9vw, 128px);
+
     /* 圆角 */
     --radius-image: 12px;
+    --radius-card: 16px;
+    --radius-panel: 24px;
     --radius-pill: 999px;
   }
 

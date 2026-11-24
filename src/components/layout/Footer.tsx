@@ -17,6 +17,7 @@
  *          默认 #333，Hover 深红并上移 4px（已和设计确认）。
  * ========================================================== */
 import styled from "styled-components";
+import SmartLink from "../common/SmartLink";
 import {
   ABOUT_SITE_LINK,
   CONTACT_EMAIL,
@@ -236,7 +237,7 @@ const ColumnTitle = styled.h2`
 `;
 
 // 栏目链接
-const ColumnLink = styled.a`
+const ColumnLink = styled(SmartLink)`
   display: block;
   margin-bottom: 16px;
   font-size: 18px;

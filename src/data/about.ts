@@ -40,5 +40,5 @@ export const ABOUT_PARAGRAPHS: string[] = [PARAGRAPH_ONE.join(""), PARAGRAPH_TWO
 // 底部按钮
 export const ABOUT_BUTTON = {
   label: "关于我们 · 了解各部门",
-  href: "#footer",
+  href: "/about",
 };

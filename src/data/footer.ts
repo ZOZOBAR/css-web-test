@@ -26,20 +26,25 @@ export const SOCIAL_LINKS: SocialLink[] = [
 
 // 中间："探索"一栏
 export const EXPLORE_LINKS: FooterLink[] = [
-  { label: "主页", href: "#top" },
-  { label: "活动", href: "#events" },
-  { label: "关于我们", href: "#about" },
-  { label: "CSSA 荣誉墙", href: "#footer" },
-  { label: "合作", href: "#partners" },
+  { label: "主页", href: "/" },
+  { label: "活动", href: "/events" },
+  { label: "关于我们", href: "/about" },
+  { label: "CSSA 荣誉墙", href: "/about/honor-wall" },
+  { label: "合作", href: "/contact" },
 ];
 
 // 中间："资源"一栏
+// 职发百宝箱新版页面还没做，先链接到原网站；加入我们 = CSSA Portal（同原网站）
 export const RESOURCE_LINKS: FooterLink[] = [
-  { label: "新生手册", href: "#resources" },
-  { label: "职发百宝箱", href: "#resources" },
-  { label: "加入我们", href: "#footer" },
+  { label: "新生手册", href: "/handbook" },
+  { label: "职发百宝箱", href: "https://www.bucssa.org/zh/Resources/Resources_Career" },
+  { label: "加入我们", href: "https://portal.bucssa.org/" },
 ];
 
 // 右侧："联系与关注"一栏
 export const CONTACT_EMAIL = "bucssatech@gmail.com";
-export const ABOUT_SITE_LINK: FooterLink = { label: "关于网站 ↗", href: "#about" };
+// 「关于网站」新版页面还没做，先链接到原网站
+export const ABOUT_SITE_LINK: FooterLink = {
+  label: "关于网站 ↗",
+  href: "https://www.bucssa.org/zh/About_Website",
+};
